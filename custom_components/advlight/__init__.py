@@ -2,7 +2,7 @@
 Custom integration to integrate Telerupteurs with Home Assistant.
 
 For more details about this integration, please refer to
-https://github.com/custom-components/ha-telerupteur-component
+https://github.com/Elwinmage/ha-adv-light-component
 """
 from datetime import timedelta
 import logging

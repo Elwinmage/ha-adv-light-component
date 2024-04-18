@@ -1,10 +1,10 @@
 """Constants for integration_blueprint."""
 # Base component constants
-NAME = "Telerupteur"
-DOMAIN = "telerupteur"
+NAME = "Advanced Light"
+DOMAIN = "advlight"
 DOMAIN_DATA = f"{DOMAIN}_data"
-VERSION = "2021.12.8"
-ISSUE_URL = "https://github.com/custom-components/ha-telerupteur-component/issues"
+VERSION = "2024.04.18"
+ISSUE_URL = "https://github.com/Elwinmage/ha-adv-light-component/issues"
 
 LIGHT = "light"
 PLATFORMS = [LIGHT]
@@ -14,6 +14,9 @@ DEFAULT_NAME = DOMAIN
 
 CONF_OUTPUT = "light_command"
 CONF_INPUT = "light_state"
+
+CONF_SUBTYPE = "subtype"
+DEFAULT_SUBTYPE="impulse"
 
 OUPTUT_DURATION = 1
 

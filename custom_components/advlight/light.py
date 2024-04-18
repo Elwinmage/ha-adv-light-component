@@ -1,4 +1,4 @@
-"""Light platform for telerupteur."""
+"""Light platform for advanced light."""
 import logging
 import asyncio
 import voluptuous as vol
@@ -25,6 +25,7 @@ from homeassistant.const import (
 
 from .const import (
     DEFAULT_NAME,
+    DEFAULT_SUBTYPE,
     DOMAIN,
     PLATFORMS,
     CONF_INPUT,
@@ -37,6 +38,7 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
     {
         vol.Required(CONF_OUTPUT): cv.entity_id,
         vol.Required(CONF_INPUT): cv.entity_id,
+        vol.Optional(CONF_SUBTYPE, default=DEFAULT_SUBTYPE): cv.string,
         vol.Optional(CONF_NAME, default=DEFAULT_NAME): cv.string,
         vol.Optional(CONF_UNIQUE_ID, default="none"): cv.string,
     }
@@ -46,7 +48,7 @@ _LOGGER: logging.Logger = logging.getLogger(__package__)
 
 
 async def async_setup_platform(hass, config, async_add_entities, discovery_info=None):
-    """Set up the telerupteur platform."""
+    """Set up the advlight platform."""
     await async_setup_reload_service(hass, DOMAIN, PLATFORMS)
 
     platform = entity_platform.current_platform.get()
@@ -57,20 +59,24 @@ async def async_setup_platform(hass, config, async_add_entities, discovery_info=
         "unique_id": config.get(CONF_UNIQUE_ID),
         "light_command_id": config.get(CONF_OUTPUT),
         "light_state_id": config.get(CONF_INPUT),
+        "subtype":config.get(CONF_SUBTYPE),
     }
 
-    telerupteur = TelerupteurLight(**parameters)
-    async_add_entities([telerupteur])
+    advlight = AdvLight(**parameters)
+    async_add_entities([advlight])
 
 
-class TelerupteurLight(LightEntity):
-    """Telerupteur light class."""
+class AdvLight(LightEntity):
+    """AdvLight class."""
 
     def __init__(self, **kwargs):
         self._name = kwargs.get("name")
         self._unique_id = kwargs.get("unique_id")
         self._light_command_id = kwargs.get("light_command_id")
         self._light_state_id = kwargs.get("light_state_id")
+        self._light_subtype = kwargs.get("subtype")
+        if self._light_subtype == "non":
+             self._light_subtype = DEFAULT_SUBTYPE
         self._light_s = False
         if self._unique_id == "none":
             self._unique_id = slugify(f"{DOMAIN}_{self._name}_{self._light_command_id}")
@@ -122,9 +128,12 @@ class TelerupteurLight(LightEntity):
 
     async def _toggle_light(self):
         data = {ATTR_ENTITY_ID: self._light_command_id}
-        await self.hass.services.async_call(HA_DOMAIN, SERVICE_TURN_ON, data)
-        await asyncio.sleep(OUPTUT_DURATION)
-        await self.hass.services.async_call(HA_DOMAIN, SERVICE_TURN_OFF, data)
+        if(self._light_subtype == "impulse"):
+            await self.hass.services.async_call(HA_DOMAIN, SERVICE_TURN_ON, data)
+            await asyncio.sleep(OUPTUT_DURATION)
+            await self.hass.services.async_call(HA_DOMAIN, SERVICE_TURN_OFF, data)
+        elif (self._light_subtype == "backAndForth"):
+            await self.hass.services.async_call(HA_DOMAIN, SERVICE_TOGGLE, data)
 
     async def async_turn_on(self, **kwargs):
         """Turn device on."""
