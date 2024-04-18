@@ -1,37 +1,35 @@
 """Light platform for advanced light."""
-import logging
 import asyncio
+import logging
+
 import voluptuous as vol
-from homeassistant.components.light import (
-    LightEntity,
-    PLATFORM_SCHEMA,
-    COLOR_MODE_ONOFF,
-)
-from homeassistant.util import slugify
-from homeassistant.helpers import entity_platform
-from homeassistant.helpers.reload import async_setup_reload_service
-import homeassistant.helpers.config_validation as cv
-from homeassistant.helpers.event import (
-    async_track_state_change,
-)
-from homeassistant.core import DOMAIN as HA_DOMAIN
+
+from homeassistant.components.light import PLATFORM_SCHEMA, LightEntity
 from homeassistant.const import (
     ATTR_ENTITY_ID,
     CONF_NAME,
     CONF_UNIQUE_ID,
+    SERVICE_TOGGLE,
     SERVICE_TURN_OFF,
     SERVICE_TURN_ON,
 )
+from homeassistant.core import DOMAIN as HA_DOMAIN
+from homeassistant.helpers import entity_platform
+import homeassistant.helpers.config_validation as cv
+from homeassistant.helpers.event import async_track_state_change
+from homeassistant.helpers.reload import async_setup_reload_service
+from homeassistant.util import slugify
 
 from .const import (
+    CONF_INPUT,
+    CONF_OUTPUT,
+    CONF_SUBTYPE,
     DEFAULT_NAME,
     DEFAULT_SUBTYPE,
     DOMAIN,
-    PLATFORMS,
-    CONF_INPUT,
-    CONF_OUTPUT,
     ICON,
     OUPTUT_DURATION,
+    PLATFORMS,
 )
 
 PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
@@ -47,7 +45,9 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
 _LOGGER: logging.Logger = logging.getLogger(__package__)
 
 
-async def async_setup_platform(hass, config, async_add_entities, discovery_info=None):
+async def async_setup_platform(
+    hass, config, async_add_entities, discovery_info=None
+) -> None:
     """Set up the advlight platform."""
     await async_setup_reload_service(hass, DOMAIN, PLATFORMS)
 
@@ -59,7 +59,7 @@ async def async_setup_platform(hass, config, async_add_entities, discovery_info=
         "unique_id": config.get(CONF_UNIQUE_ID),
         "light_command_id": config.get(CONF_OUTPUT),
         "light_state_id": config.get(CONF_INPUT),
-        "subtype":config.get(CONF_SUBTYPE),
+        "subtype": config.get(CONF_SUBTYPE),
     }
 
     advlight = AdvLight(**parameters)
@@ -70,17 +70,17 @@ class AdvLight(LightEntity):
     """AdvLight class."""
 
     def __init__(self, **kwargs):
+        """Class init."""
         self._name = kwargs.get("name")
         self._unique_id = kwargs.get("unique_id")
         self._light_command_id = kwargs.get("light_command_id")
         self._light_state_id = kwargs.get("light_state_id")
         self._light_subtype = kwargs.get("subtype")
         if self._light_subtype == "non":
-             self._light_subtype = DEFAULT_SUBTYPE
+            self._light_subtype = DEFAULT_SUBTYPE
         self._light_s = False
         if self._unique_id == "none":
             self._unique_id = slugify(f"{DOMAIN}_{self._name}_{self._light_command_id}")
-        self._attr_supported_color_modes = [COLOR_MODE_ONOFF]
 
     async def async_added_to_hass(self):
         """Run when entity about to be added."""
@@ -102,7 +102,7 @@ class AdvLight(LightEntity):
 
         _LOGGER.debug("Light state change from %s to %s", old_state, new_state)
         self._light_s = new_state
-        await self.async_update_ha_state()
+        self.async_write_ha_state()
 
     @property
     def name(self):
@@ -128,11 +128,11 @@ class AdvLight(LightEntity):
 
     async def _toggle_light(self):
         data = {ATTR_ENTITY_ID: self._light_command_id}
-        if(self._light_subtype == "impulse"):
+        if self._light_subtype == "impulse":
             await self.hass.services.async_call(HA_DOMAIN, SERVICE_TURN_ON, data)
             await asyncio.sleep(OUPTUT_DURATION)
             await self.hass.services.async_call(HA_DOMAIN, SERVICE_TURN_OFF, data)
-        elif (self._light_subtype == "backAndForth"):
+        elif self._light_subtype == "backAndForth":
             await self.hass.services.async_call(HA_DOMAIN, SERVICE_TOGGLE, data)
 
     async def async_turn_on(self, **kwargs):
