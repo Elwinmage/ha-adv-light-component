@@ -8,7 +8,7 @@
 [![Discord][discord-shield]][discord]
 [![Community Forum][forum-shield]][forum]
 
-This is a fork from benlbrm/ha-telerupteur-component adding support for back and Forth switch.
+This is a fork from https://github.com/benlbrm/ha-telerupteur-component adding support for back and Forth switch.
 
 **This component will set up the following platforms.**
 
@@ -48,7 +48,7 @@ light:
 
 ***
 
-[integration_telerupteur]: https://github.com/Elwinmage/ha-adv-light-component
+[integration_advlight]: https://github.com/Elwinmage/ha-adv-light-component
 [commits-shield]: https://img.shields.io/github/commit-activity/y/Elwinmage/ha-adv-light-component.svg?style=for-the-badge
 [commits]: https://github.com/Elwinmage/ha-adv-light-component/commits/master
 [hacs]: https://hacs.xyz
