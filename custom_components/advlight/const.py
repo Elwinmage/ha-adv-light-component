@@ -1,4 +1,5 @@
 """Constants for integration_blueprint."""
+
 # Base component constants
 NAME = "Advanced Light"
 DOMAIN = "advlight"
@@ -16,7 +17,7 @@ CONF_OUTPUT = "light_command"
 CONF_INPUT = "light_state"
 
 CONF_SUBTYPE = "subtype"
-DEFAULT_SUBTYPE="impulse"
+DEFAULT_SUBTYPE = "impulse"
 
 OUPTUT_DURATION = 1
 
