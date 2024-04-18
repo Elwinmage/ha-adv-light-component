@@ -8,6 +8,7 @@
 [![Discord][discord-shield]][discord]
 [![Community Forum][forum-shield]][forum]
 
+This is a fork from benlbrm/ha-telerupteur-component adding support for back and Forth switch.
 
 **This component will set up the following platforms.**
 
