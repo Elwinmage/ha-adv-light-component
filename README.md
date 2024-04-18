@@ -1,13 +1,3 @@
-[![GitHub Release][releases-shield]][releases]
-[![GitHub Activity][commits-shield]][commits]
-[![License][license-shield]][license]
-
-[![hacs][hacsbadge]][hacs]
-[![Project Maintenance][maintenance-shield]][user_profile]
-
-[![Discord][discord-shield]][discord]
-[![Community Forum][forum-shield]][forum]
-
 This is a fork from https://github.com/benlbrm/ha-telerupteur-component adding support for back and Forth switch.
 
 **This component will set up the following platforms.**
