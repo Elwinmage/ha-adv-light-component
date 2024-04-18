@@ -126,6 +126,11 @@ class AdvLight(LightEntity):
         """Return the icon of the sensor."""
         return ICON
 
+    @property
+    def unique_id(self):
+    """Return a unique_id for this entity."""
+    return self._unique_id
+
     async def _toggle_light(self):
         data = {ATTR_ENTITY_ID: self._light_command_id}
         if self._light_subtype == "impulse":
