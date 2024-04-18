@@ -1,9 +1,9 @@
 {
   "domain": "advlight",
   "name": "Advanced Light",
-    "documentation": "https://github.com/Elwinmage/ha-adv-light-component",
+  "documentation": "https://github.com/Elwinmage/ha-adv-light-component",
   "iot_class": "local_polling",
-    "issue_tracker": "https://github.com/Elwinmage/ha-adv-light-component/issues",
+  "issue_tracker": "https://github.com/Elwinmage/ha-adv-light-component/issues",
   "version": "2024.04.18",
   "codeowners": [
     "@Elwinmage"
