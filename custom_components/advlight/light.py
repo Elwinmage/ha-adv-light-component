@@ -4,7 +4,7 @@ import logging
 
 import voluptuous as vol
 
-from homeassistant.components.light import PLATFORM_SCHEMA, LightEntity
+from homeassistant.components.light import PLATFORM_SCHEMA, LightEntity, ColorMode
 from homeassistant.const import (
     ATTR_ENTITY_ID,
     CONF_NAME,
@@ -81,6 +81,7 @@ class AdvLight(LightEntity):
         self._light_s = False
         if self._unique_id == "none":
             self._unique_id = slugify(f"{DOMAIN}_{self._name}_{self._light_command_id}")
+        self._attr_supported_color_modes = [ColorMode.ONOFF]
 
     async def async_added_to_hass(self):
         """Run when entity about to be added."""
