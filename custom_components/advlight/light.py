@@ -81,8 +81,8 @@ class AdvLight(LightEntity):
         self._light_s = False
         if self._unique_id == "none":
             self._unique_id = slugify(f"{DOMAIN}_{self._name}_{self._light_command_id}")
-        self._attr_supported_color_modes = [ColorMode.ONOFF]
-        self._attr_color_mode = ColorMode.ONOFF
+        #self._attr_supported_color_modes = [ColorMode.ONOFF]
+        #self._attr_color_mode = ColorMode.ONOFF
         
     async def async_added_to_hass(self):
         """Run when entity about to be added."""
