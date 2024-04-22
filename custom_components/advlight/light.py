@@ -78,11 +78,12 @@ class AdvLight(LightEntity):
         self._light_subtype = kwargs.get("subtype")
         if self._light_subtype == "non":
             self._light_subtype = DEFAULT_SUBTYPE
-        self._light_s = False
+        self._light_s = "off"
         if self._unique_id == "none":
             self._unique_id = slugify(f"{DOMAIN}_{self._name}_{self._light_command_id}")
-        #self._attr_supported_color_modes = [ColorMode.ONOFF]
-        #self._attr_color_mode = ColorMode.ONOFF
+        self._attr_supported_color_modes = [ColorMode.ONOFF]
+        self._attr_color_mode = ColorMode.ONOFF
+    
         
     async def async_added_to_hass(self):
         """Run when entity about to be added."""
@@ -141,6 +142,8 @@ class AdvLight(LightEntity):
             await self.hass.services.async_call(HA_DOMAIN, SERVICE_TURN_OFF, data)
         elif self._light_subtype == "backAndForth":
             await self.hass.services.async_call(HA_DOMAIN, SERVICE_TOGGLE, data)
+        elif self._light_subtype == "PT2262":
+            await self.hass.services.async_call(HA_DOMAIN, SERVICE_TURN_ON, data)
 
     async def async_turn_on(self, **kwargs):
         """Turn device on."""
