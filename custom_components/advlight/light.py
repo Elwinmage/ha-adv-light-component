@@ -4,6 +4,9 @@ import logging
 
 import voluptuous as vol
 
+from homeassistant.const import EVENT_HOMEASSISTANT_STARTED
+from homeassistant.core import Event
+
 from homeassistant.components.light import PLATFORM_SCHEMA, LightEntity, ColorMode
 from homeassistant.const import (
     ATTR_ENTITY_ID,
@@ -76,15 +79,14 @@ class AdvLight(LightEntity):
         self._light_command_id = kwargs.get("light_command_id")
         self._light_state_id = kwargs.get("light_state_id")
         self._light_subtype = kwargs.get("subtype")
-        if self._light_subtype == "non":
+        if self._light_subtype == None:
             self._light_subtype = DEFAULT_SUBTYPE
         self._light_s = "off"
         if self._unique_id == "none":
             self._unique_id = slugify(f"{DOMAIN}_{self._name}_{self._light_command_id}")
         self._attr_supported_color_modes = [ColorMode.ONOFF]
         self._attr_color_mode = ColorMode.ONOFF
-    
-        
+
     async def async_added_to_hass(self):
         """Run when entity about to be added."""
         await super().async_added_to_hass()
@@ -93,6 +95,11 @@ class AdvLight(LightEntity):
         async_track_state_change(
             self.hass, self._light_state_id, self._async_light_changed
         )
+        if self._light_subtype == "impulse":
+            _LOGGER.info("Configure impulse for %s. Set state of %s to off."%(self._unique_id,self._light_command_id))
+            data = {ATTR_ENTITY_ID: self._light_command_id}
+            await self.hass.services.async_call(HA_DOMAIN, SERVICE_TURN_OFF, data)
+
 
     async def _async_light_changed(self, entity_id, old_state, new_state):
         """Handle Light State changes."""
