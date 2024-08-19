@@ -5,7 +5,7 @@ import logging
 import voluptuous as vol
 
 from homeassistant.const import EVENT_HOMEASSISTANT_STARTED
-from homeassistant.core import Event
+from homeassistant.core import Event, EventStateChangedData, callback
 
 from homeassistant.components.light import PLATFORM_SCHEMA, LightEntity, ColorMode
 from homeassistant.const import (
@@ -19,6 +19,7 @@ from homeassistant.const import (
 from homeassistant.core import DOMAIN as HA_DOMAIN
 from homeassistant.helpers import entity_platform
 import homeassistant.helpers.config_validation as cv
+
 from homeassistant.helpers.event import async_track_state_change_event
 from homeassistant.helpers.reload import async_setup_reload_service
 from homeassistant.util import slugify
