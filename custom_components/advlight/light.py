@@ -19,7 +19,7 @@ from homeassistant.const import (
 from homeassistant.core import DOMAIN as HA_DOMAIN
 from homeassistant.helpers import entity_platform
 import homeassistant.helpers.config_validation as cv
-from homeassistant.helpers.event import async_track_state_change
+from homeassistant.helpers.event import async_track_state_change_event
 from homeassistant.helpers.reload import async_setup_reload_service
 from homeassistant.util import slugify
 
@@ -92,7 +92,7 @@ class AdvLight(LightEntity):
         await super().async_added_to_hass()
 
         # Add listener to check if light state has changed
-        async_track_state_change(
+        async_track_state_change_event(
             self.hass, self._light_state_id, self._async_light_changed
         )
         if self._light_subtype == "impulse":
@@ -101,8 +101,11 @@ class AdvLight(LightEntity):
             await self.hass.services.async_call(HA_DOMAIN, SERVICE_TURN_OFF, data)
 
 
-    async def _async_light_changed(self, entity_id, old_state, new_state):
+    async def _async_light_changed(self, event: Event[EventStateChangedData]) -> None:
         """Handle Light State changes."""
+        entity_id = event.data["entity_id"]
+        old_state = event.data["old_state"]
+        new_state = event.data["new_state"]
         if new_state is None:
             return
         new_state = new_state.state
