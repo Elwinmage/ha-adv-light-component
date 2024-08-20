@@ -153,7 +153,7 @@ class AdvLight(LightEntity):
             await self.hass.services.async_call(HA_DOMAIN, SERVICE_TURN_OFF, data)
         elif self._light_subtype == "backAndForth":
             await self.hass.services.async_call(HA_DOMAIN, SERVICE_TOGGLE, data)
-        elif self._light_subtype == "PT2262":
+        elif self._light_subtype == "push":
             await self.hass.services.async_call(HA_DOMAIN, SERVICE_TURN_ON, data)
 
     async def async_turn_on(self, **kwargs):

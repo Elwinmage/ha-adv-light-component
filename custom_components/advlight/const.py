@@ -4,7 +4,7 @@
 NAME = "Advanced Light"
 DOMAIN = "advlight"
 DOMAIN_DATA = f"{DOMAIN}_data"
-VERSION = "2024.08.20"
+VERSION = "2024.08.21"
 ISSUE_URL = "https://github.com/Elwinmage/ha-adv-light-component/issues"
 
 LIGHT = "light"
