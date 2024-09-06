@@ -18,14 +18,19 @@ Platform | Description
 light:
 - platform: advlight
     name: Lumiere Chambre1
-    type: impulse
+    type: impulse # turn_on, wait,turn_off
     light_command: switch.dolightchambre1
     light_state: binary_sensor.dilightchambre1
 - platform: advlight
     name: Lumiere Chambre2
-    type: backAndForth
+    type: backAndForth # toggle
     light_command: switch.dolightchambre2
     light_state: binary_sensor.dilightchambre2
+- platform: advlight
+    name: Lumiere Chambre3
+    type: push # turn_on
+    light_command: switch.dolightchambre3
+    light_state: binary_sensor.dilightchambre3
 ```
 
 ## Required hardware to use this integration
