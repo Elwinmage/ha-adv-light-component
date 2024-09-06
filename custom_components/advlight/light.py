@@ -96,11 +96,15 @@ class AdvLight(LightEntity):
         async_track_state_change_event(
             self.hass, self._light_state_id, self._async_light_changed
         )
+        # Init Impulse at startup
         if self._light_subtype == "impulse":
-            _LOGGER.info("Configure impulse for %s. Set state of %s to off."%(self._unique_id,self._light_command_id))
-            data = {ATTR_ENTITY_ID: self._light_command_id}
-            await self.hass.services.async_call(HA_DOMAIN, SERVICE_TURN_OFF, data)
+            self.hass.bus.async_listen_once(
+                EVENT_HOMEASSISTANT_STARTED, self._async_init_impulse)
 
+    async def _async_init_impulse(self, event: Event[EventStateChangedData]) -> None:
+        _LOGGER.info("Configure impulse for %s. Set state of %s to off."%(self._unique_id,self._light_command_id))
+        data = {ATTR_ENTITY_ID: self._light_command_id}
+        await self.hass.services.async_call(HA_DOMAIN, SERVICE_TURN_OFF, data)
 
     async def _async_light_changed(self, event: Event[EventStateChangedData]) -> None:
         """Handle Light State changes."""
