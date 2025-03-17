@@ -6,7 +6,8 @@ https://github.com/Elwinmage/ha-adv-light-component
 from datetime import timedelta
 import logging
 
-from homeassistant.core import Config, HomeAssistant
+from homeassistant.core import HomeAssistant
+from homeassistant.core_config import Config
 
 from .const import DOMAIN, STARTUP_MESSAGE
 
