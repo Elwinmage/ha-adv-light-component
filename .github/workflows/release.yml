@@ -10,4 +10,4 @@ jobs:
       - name: "Set version number from trigger's tag"
         run: |
           yq -i -o json '.version="${{ github.ref_name }}"' \
-            "${{ github.workspace }}/custom_components/ha-adv-light-component/manifest.json"
+            "${{ github.workspace }}/custom_component/ha-adv-light-component/manifest.json"
